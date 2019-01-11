@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Exec App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="lib/html5-boilerplate/dist/css/normalize.css">
+    <link rel="stylesheet" href="lib/html5-boilerplate/dist/css/main.css">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="lib/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="lib/material-design-icons-iconfont/dist/material-design-icons.css">
+    <link rel="stylesheet" href="lib/angular-material-data-table/dist/md-data-table.min.css">
+    <style>.active {
+        color: red;
+        font-weight: bold;
+    }</style>
+</head>
+<body ng-app="app">
+<!--<base href="app/" />-->
+<div ng-controller="HomeCtrl" layout="column" style="height:100%;" ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button ng-click="lockLeft=!lockLeft" class="md-icon-button" aria-label="Menu" ng-disabled="false">
+                <md-icon class="material-icons">home</md-icon>
+            </md-button>
+            &nbsp;&nbsp;&nbsp;
+            <h2 flex md-truncate>Exec App</h2>
+            <md-button class="md-icon-button" aria-label="Favorite">
+                <md-icon class="material-icons favorite-icon">notifications</md-icon>
+            </md-button>
+            <md-button ng-click="toggleRight()" class="md-icon-button" aria-label="More">
+                <md-icon class="material-icons">more_vert</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <section layout="row" flex="">
+        <md-sidenav ng-mouseenter="hoverIn()" ng-mouseleave="hoverOut()" layout="column" ng-class="myClass"
+                    md-component-id="small"
+                    md-is-locked-open=true ng-show="edit">
+            <md-content role="navigation" md-scroll-y="">
+                <md-list>
+                    <md-list-item ng-repeat="item in menu" ng-click="close()">
+                        <md-icon md-font-set="material-icons">{{item.icon}}</md-icon>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
+            </md-content>
+        </md-sidenav>
+        <md-sidenav ng-mouseenter="hoverIn()" ng-mouseleave="hoverOut()" layout="column"
+                    class="rightnav md-whiteframe-z2"
+                    md-component-id="big" md-is-locked-open=true ng-show="hoverEdit">
+            <div class="md-toolbar-tools">
+                <h2 flex md-truncate></h2>
+                <md-button ng-click="toggleClass()" class="md-icon-button" aria-label="Menu"
+                           ng-disabled="false">
+                    <md-icon class="material-icons">{{buttonToggle}}</md-icon>
+                </md-button>
+            </div>
+            <md-content role="navigation">
+                <md-list>
+                    <md-list-item ng-repeat="item in menu" ng-click="close()" ui-sref="{{item.link}}">
+                        <md-icon md-font-set="material-icons">{{item.icon}}</md-icon>
+                        <p class="md-body-2">{{item.name}}</p>
+                        <span flex></span>
+                        <md-icon>chevron_right</md-icon>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
+            </md-content>
+        </md-sidenav>
+        <!--<md-sidenav-->
+        <!--class="md-sidenav-left"-->
+        <!--md-component-id="left"-->
+        <!--md-is-locked-open="$mdMedia('gt-md')"-->
+        <!--md-whiteframe="4">-->
+
+        <!--<md-toolbar class="md-theme-indigo">-->
+        <!--<h1 class="md-toolbar-tools">Sidenav Left</h1>-->
+        <!--</md-toolbar>-->
+        <!--<md-content layout-padding ng-controller="LeftCtrl">-->
+        <!--<md-button ng-click="close()" class="md-primary" hide-gt-md>-->
+        <!--Close Sidenav Left-->
+        <!--</md-button>-->
+        <!--<p hide show-gt-md>-->
+        <!--This sidenav is locked open on your device. To go back to the default behavior,-->
+        <!--narrow your display.-->
+        <!--</p>-->
+        <!--</md-content>-->
+
+        <!--</md-sidenav>-->
+        <md-content flex="" layout-padding="">
+            <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a
+                    href="http://browsehappy.com/">upgrade
+                your browser</a> to improve your experience.</p>
+            <![endif]-->
+            <ui-view></ui-view>
+            <!--<div>AngularJS seed app: v<span my-app-version></span></div>-->
+        </md-content>
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+            <div ng-controller="RightCtrl">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2 flex md-truncate></h2>
+                        <md-button ng-click="close()" class="md-icon-button" aria-label="Menu"
+                                   ng-disabled="false">
+                            <md-icon class="material-icons">close</md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <md-content layout-padding="">
+
+                </md-content>
+            </div>
+        </md-sidenav>
+    </section>
+</div>
+</div>
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+-->
+<script type="text/javascript" src="lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="lib/angular-animate/angular-animate.min.js"></script>
+<script type="text/javascript" src="lib/angular-aria/angular-aria.min.js"></script>
+<script type="text/javascript" src="lib/angular-loader/angular-loader.min.js"></script>
+<script type="text/javascript" src="lib/angular-material/angular-material.min.js"></script>
+<script type="text/javascript" src="lib/angular-messages/angular-messages.min.js"></script>
+<script type="text/javascript" src="lib/angular-material-data-table/dist/md-data-table.min.js"></script>
+<script type="text/javascript" src="lib/angular-mocks/angular-mocks.js"></script>
+<script type="text/javascript" src="lib/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="core/version/version.js"></script>
+<script type="text/javascript" src="core/version/version-directive.js"></script>
+<script type="text/javascript" src="core/version/interpolate-filter.js"></script>
+
+<script type="text/javascript" src="src/js/controllers/HomeController.js"></script>
+<script type="text/javascript" src="src/js/routes/HomeRoute.js"></script>
+<script type="text/javascript" src="src/js/services/HomeService.js"></script>
+<script type="text/javascript" src="src/js/controllers/TQueriesController.js"></script>
+<script type="text/javascript" src="src/js/services/TQueriesService.js"></script>
+<script type="text/javascript" src="src/js/controllers/OraToolsController.js"></script>
+<script type="text/javascript" src="src/js/services/OraToolsService.js"></script>
+</body>
+</html>

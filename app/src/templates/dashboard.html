@@ -1,0 +1,15 @@
+<div ng-controller="HomeCtrl as ctrl">
+    <md-content layout-padding="">
+        <md-grid-list md-cols-gt-md="12" md-cols="3" md-cols-md="8" md-row-height-gt-md="1:1"
+                      md-row-height="4:3" md-gutter-gt-md="16px" md-gutter-md="8px" md-gutter="4px">
+            <md-grid-tile ng-repeat="tile in ctrl.colorTiles" ng-style="{ 'background': tile.color }"
+                          md-colspan-gt-sm="3" md-rowspan-gt-sm="2">
+                <md-grid-tile-header>
+                    <span class="md-headline">{{tile.title}}</span>
+                </md-grid-tile-header>
+                <a href="{{tile.uril}}" class="md-subhead" target="_blank"
+                   rel="noopener noreferrer"><i class="fa {{tile.icon}}"></i> {{tile.subtitle}}</a>
+            </md-grid-tile>
+        </md-grid-list>
+    </md-content>
+</div>

@@ -1,0 +1,44 @@
+<md-dialog aria-label="Mango (Fruit)">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Add Query</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancelDialog()">
+                    <md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <form name="projectForm" layout="row">
+                    <div layout="column">
+                        <md-input-container>
+                            <label>Query Title</label>
+                            <input required name="queryTitle" ng-model="queryTitle">
+                            <div ng-messages="projectForm.queryTitle.$error">
+                                <div ng-message="required">Query Title harus diisi</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Query Desc.</label>
+                            <textarea required name="queryDesc" rows="5" md-select-on-focus ng-model="queryDesc"></textarea>
+                            <div ng-messages="projectForm.queryDesc.$error">
+                                <div ng-message="required">Query Desc. harus diisi</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </form>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button class="md-icon-button" aria-label="Run">
+                <md-icon>play_arrow</md-icon>
+            </md-button>
+            <div flex=""></div>
+            <md-button class="md-icon-button" ng-click="">
+                <md-icon>save</md-icon>
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

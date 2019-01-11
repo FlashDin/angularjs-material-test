@@ -1,0 +1,58 @@
+<md-card>
+    <md-input-container class="md-block">
+        <label>SQL Select Editor</label>
+        <textarea rows="5" md-select-on-focus></textarea>
+    </md-input-container>
+    <div layout="row" layout-sm="column" layout-align="right" layout-wrap>
+        <md-button class="md-fab md-accent" aria-label="Save">
+            <md-icon>save</md-icon>
+        </md-button>
+        <md-button class="md-fab md-accent" aria-label="Save">
+            <md-icon>assignment_return</md-icon>
+        </md-button>
+        <div flex=""></div>
+        <md-button class="md-fab md-accent" aria-label="Run">
+            <md-icon>library_books</md-icon>
+        </md-button>
+        <md-button class="md-fab md-accent" aria-label="Run">
+            <md-icon>play_arrow</md-icon>
+        </md-button>
+    </div>
+    <!--<md-checkbox ng-click="loadData('select * from agodist.master_plant')">HEHE</md-checkbox>-->
+</md-card>
+<md-card>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+        <div class="md-toolbar-tools">
+            <span>Result : </span>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="loadStuff()">
+                <md-icon>refresh</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+        </div>
+    </md-toolbar>
+    <md-table-container>
+        <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}" ng-model="selected"
+               md-progress="promise">
+            <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
+            <tr md-row>
+                <th ng-repeat="header in keyes" md-column md-order-by="{{header}}"><span>{{header}}</span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect"
+                ng-disabled="row.calories.value > 400"
+                ng-repeat="row in data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                <td ng-repeat="header in keyes" md-cell>{{row.tusers.uname}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page"
+                         md-total="{{data.count}}" md-page-select="options.pageSelect"
+                         md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+</md-card>
