@@ -6,7 +6,7 @@
             <md-button class="md-icon-button" ng-click="">
                 <md-icon>search</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ng-click="showDialog($event)">
+            <md-button class="md-icon-button" ng-click="showDialog($event, -1)">
                 <md-icon>add</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="loadStuff()">
@@ -34,29 +34,28 @@
             </thead>
             <tbody md-body>
             <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect"
-                ng-disabled="row.calories.value > 400"
-                ng-repeat="row in data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
-                <td md-cell>{{row.tusers.uname}}</td>
-                <td md-cell>{{row.queryTitle}}</td>
-                <td md-cell>{{row.queryDesc}}</td>
+                ng-repeat="rows in data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                <td md-cell>{{rows.tusers.uname}}</td>
+                <td md-cell>{{rows.queryTitle}}</td>
+                <td md-cell>{{rows.queryDesc}}</td>
                 <td md-cell>
-                    <md-button class="md-icon-button" ng-click="">
+                    <md-button type="button" class="md-icon-button" ngclipboard data-clipboard-text="{{rows.queryDesc}}">
                         <md-icon>content_copy</md-icon>
                     </md-button>
                 </td>
                 <td md-cell>
-                    <md-button class="md-icon-button" ng-click="">
+                    <md-button class="md-icon-button" ng-click="showDialog($event, $index)">
                         <md-icon>edit</md-icon>
                     </md-button>
-                    <md-button class="md-icon-button" ng-click="">
+                    <md-button class="md-icon-button" ng-click="" ng-show="false">
                         <md-icon>save</md-icon>
                     </md-button>
-                    <md-button class="md-icon-button" ng-click="">
+                    <md-button class="md-icon-button" ng-click="" ng-show="false">
                         <md-icon>cancel</md-icon>
                     </md-button>
                 </td>
                 <td md-cell>
-                    <md-button class="md-icon-button" ng-click="">
+                    <md-button class="md-icon-button" ng-click="showConfirm($event, $index)">
                         <md-icon>delete</md-icon>
                     </md-button>
                 </td>

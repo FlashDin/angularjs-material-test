@@ -9,6 +9,7 @@ var mod = angular.module('app', [
     'ngAnimate',
     'ngAria',
     'md.data.table',
+    'ngclipboard',
     'home.route',
     'home.controller',
     'tqueries.controller',
