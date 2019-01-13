@@ -6,7 +6,7 @@ var mod = angular.module('tqueries.controller', [
 
 mod.controller('TQueriesCtrl', tQueriesCtrl);
 
-function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditDialog, $q, $mdDialog) {
+function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditDialog, $q, $mdDialog, $mdToast, $filter) {
     $scope.selected = [];
     $scope.limitOptions = [5, 10, 15];
     $scope.options = {
@@ -20,39 +20,53 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
         pageSelect: true
     };
     $scope.query = {
-        order: 'name',
+        filter: '',
+        order: 'nameToLower',
         limit: 5,
         page: 1
     };
-    $scope.deleteData = function (params) {
-        TQueriesService.deleteData(params[0])
+    $scope.data = [];
+    $scope.row = [];
+    $scope.findAll = function () {
+        TQueriesService.findAll()
             .then(function (response) {
                 $scope.data = response.data;
+                $scope.dataCopy = angular.copy($scope.data);
+                $scope.counted = $scope.data.length;
+                // angular.forEach(response.data, function(value, key) {
+                //
+                // });
                 console.log("status:" + response.status);
             })
             .catch(function (response) {
-                console.error('Error deleteData:', response.status, response.data);
+                console.error('Error findAll:', response.status, response.data);
             })
             .finally(function () {
                 console.log("Task Finished.");
             });
     };
-    $scope.data = [];
-    $scope.row = [];
-    TQueriesService.findAll()
-        .then(function (response) {
-            $scope.data = response.data;
-            // angular.forEach(response.data, function(value, key) {
-            //
-            // });
-            console.log("status:" + response.status);
-        })
-        .catch(function (response) {
-            console.error('Error findAll:', response.status, response.data);
-        })
-        .finally(function () {
-            console.log("Task Finished.");
-        });
+
+    // search
+    $scope.$watch("searchText", function (query) {
+        $scope.promise = $timeout(function () {
+            if (query == '') {
+                $scope.data = $scope.dataCopy;
+                $scope.counted = $scope.data.length;
+            } else {
+                $scope.data = $filter("filter")($scope.data, query);
+                $scope.counted = $filter("filter")($scope.data, query).length;
+            }
+        }, 2000);
+    });
+    $scope.show = false;
+    $scope.showSearch = function () {
+        $scope.show = true;
+    };
+    $scope.removeFilter = function () {
+        $scope.show = false;
+        $scope.searchText = '';
+    };
+    // search
     $scope.editComment = function (event, dessert) {
         event.stopPropagation(); // in case autoselect is enabled
 
@@ -101,6 +115,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
     $scope.loadStuff = function () {
         $scope.promise = $timeout(function () {
             // loading
+            $scope.findAll();
         }, 2000);
     };
     $scope.logItem = function (item) {
@@ -123,51 +138,105 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
         });
     };
     // dialog
-    $scope.showDialog = function (ev, index) {
+    $scope.showDialogSave = function (ev, index) {
         ev.stopPropagation();
         $mdDialog.show({
             templateUrl: 'src/templates/tqueries/tqueries_dialog.tmpl.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: false,
+            bindToController: true,
             fullscreen: false,
             scope: $scope,
             preserveScope: true,
             locals: {
-                index: index
+                index: (($scope.query.page - 1) * $scope.query.limit) + index
             },
-            controller: function ($scope, index) {
+            multiple: true,
+            controllerAs: 'TQueriesCtrl',
+            controller: function ($scope, index, $mdDialog) {
+                $scope.loading = false;
                 if (index >= 0) {
                     $scope.dialogTitle = "Edit Query";
-                    $scope.row = $scope.data[index];
-                    $scope.saveData = function () {
-                        TQueriesService.updateData($scope.row)
-                            .then(function (response) {
-                                $scope.res = response.data;
-                                console.log("status:" + response.status);
-                            })
-                            .catch(function (response) {
-                                console.error('Error updateData:', response.status, response.data);
-                            })
-                            .finally(function () {
-                                angular.copy($scope.row, $scope.data); // newData, oldData to update
-                                console.log("Task Finished.");
-                            });
+                    var rowx = angular.copy($scope.data[index]);
+                    $scope.row = rowx;
+                    $scope.saveData = function (ev) {
+                        var confirm = $mdDialog.confirm()
+                            .title('Yakin ubah data ini ?')
+                            .textContent('Perubahan tidak dapat diulangi.')
+                            .ariaLabel('Confirm')
+                            .targetEvent(ev)
+                            .multiple(true)
+                            .ok('Yes')
+                            .cancel('Cancel');
+                        $mdDialog.show(confirm).then(function () {
+                            $scope.loading = true;
+                            TQueriesService.updateData($scope.row)
+                                .then(function (response) {
+                                    $scope.res = response.data;
+                                    angular.copy($scope.row, $scope.data[index]); // newData, oldData to update
+                                    $mdToast.show(
+                                        $mdToast.simple()
+                                            .textContent('Data berhasil diubah')
+                                            .position('top right')
+                                            .hideDelay(2000)
+                                    );
+                                    $scope.row = [];
+                                    console.log("status:" + response.status);
+                                })
+                                .catch(function (response) {
+                                    $mdToast.show(
+                                        $mdToast.simple()
+                                            .textContent('Data gagal diubah')
+                                            .position('top right')
+                                            .hideDelay(2000)
+                                    );
+                                    console.error('Error updateData:', response.status, response.data);
+                                })
+                                .finally(function () {
+                                    $timeout(function () {
+                                        $scope.loading = false;
+                                        $scope.cancel();
+                                    }, 1000);
+                                    console.log("Task Finished.");
+                                });
+                            console.log("confirm update");
+                        }, function () {
+                            console.log("cancel");
+                        });
                     };
                 } else {
                     $scope.dialogTitle = "Add Query";
-                    $scope.row = [];
+                    $scope.row = {idQuery: '', queryTitle: '', queryDesc: '', tusers: {idUser: '', uname: ''}};
                     $scope.saveData = function () {
+                        $scope.row.tusers.idUser = 1;
+                        $scope.loading = true;
                         TQueriesService.saveData($scope.row)
                             .then(function (response) {
                                 $scope.res = response.data;
+                                $scope.data.push($scope.row);
+                                $mdToast.show(
+                                    $mdToast.simple()
+                                        .textContent('Data berhasil disimpan')
+                                        .position('top right')
+                                        .hideDelay(2000)
+                                );
+                                $scope.row = [];
                                 console.log("status:" + response.status);
                             })
                             .catch(function (response) {
+                                $mdToast.show(
+                                    $mdToast.simple()
+                                        .textContent('Data gagal disimpan')
+                                        .position('top right')
+                                        .hideDelay(2000)
+                                );
                                 console.error('Error saveData:', response.status, response.data);
                             })
                             .finally(function () {
-                                $scope.data.push($scope.row);
+                                $timeout(function () {
+                                    $scope.loading = false;
+                                }, 1000);
                                 console.log("Task Finished.");
                             });
                     };
@@ -183,8 +252,8 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
                 $scope.status = 'You cancelled the dialog.';
             });
     };
-
-    $scope.showConfirm = function (ev, index) {
+    $scope.showConfirmDelete = function (ev, index) {
+        $scope.loading = false;
         var confirm = $mdDialog.confirm()
             .title('Yakin hapus data ini ?')
             .textContent('Penghapusan tidak dapat diulangi.')
@@ -193,13 +262,64 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
             .ok('Yes')
             .cancel('Cancel');
         $mdDialog.show(confirm).then(function () {
-            $scope.data.splice(index, 1);
+            var idx = (($scope.query.page - 1) * $scope.query.limit) + index;
+            var rowx = angular.copy($scope.data[idx]);
+            $scope.row = rowx;
+            $scope.loading = true;
+            TQueriesService.deleteData($scope.row.idQuery)
+                .then(function (response) {
+                    $scope.res = response.data;
+                    $scope.data.splice(idx, 1);
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Data berhasil dihapus')
+                            .position('top right')
+                            .hideDelay(2000)
+                    );
+                    $scope.row = [];
+                    console.log("status:" + response.status);
+                })
+                .catch(function (response) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Data gagal dihapus')
+                            .position('top right')
+                            .hideDelay(2000)
+                    );
+                    console.error('Error deleteData:', response.status, response.data);
+                })
+                .finally(function () {
+                    $timeout(function () {
+                        $scope.loading = false;
+                    }, 1000);
+                    console.log("Task Finished.");
+                });
             console.log("confirm delete");
         }, function () {
             console.log("cancel");
         });
     };
     // dialog
+
+    // $scope.showActionToast = function () {
+    //     var pinTo = 'top right';
+    //     var toast = $mdToast.simple()
+    //         .textContent('Marked as read')
+    //         .action('UNDO')
+    //         .highlightAction(true)
+    //         .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+    //         .position(pinTo)
+    //         .hideDelay(2000);
+    //
+    //     $mdToast.show(toast).then(function (response) {
+    //         if (response == 'ok') {
+    //             alert('You clicked the \'UNDO\' action.');
+    //         }
+    //     });
+    // };
+    // $scope.closeToast = function () {
+    //     $mdToast.hide();
+    // };
 }
 
-tQueriesCtrl.$inject = ['$scope', 'TQueriesService', '$timeout', '$mdUtil', '$log', '$mdEditDialog', '$q', '$mdDialog'];
+tQueriesCtrl.$inject = ['$scope', 'TQueriesService', '$timeout', '$mdUtil', '$log', '$mdEditDialog', '$q', '$mdDialog', '$mdToast', '$filter'];

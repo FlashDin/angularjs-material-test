@@ -1,17 +1,38 @@
-<md-card>
-    <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+<md-card data-ng-init="findAll()">
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="show || options.rowSelection && selected.length">
         <div class="md-toolbar-tools">
             <span>Data Query</span>
             <div flex></div>
-            <md-button class="md-icon-button" ng-click="">
+            <md-button class="md-icon-button" ng-click="showSearch()">
                 <md-icon>search</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ng-click="showDialog($event, -1)">
+            <md-button class="md-icon-button" ng-click="showDialogSave($event, -data.length)">
                 <md-icon>add</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="loadStuff()">
                 <md-icon>refresh</md-icon>
             </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" ng-show="show &amp;&amp; !selected.length" aria-hidden="false"
+                style="">
+        &nbsp;&nbsp;&nbsp;
+        <div class="md-toolbar-tools">
+            <form flex name="filter.form">
+                <div layout="row">
+                    <md-input-container flex md-no-float class="md-block">
+                        <md-icon class="material-icons">search</md-icon>
+                        <input type="text" placeholder="Pencarian" type="text" ng-model="searchText"
+                               class="ng-pristine ng-valid ng-touched"
+                               aria-invalid="false" ng-model-options="{debounce: 500}">
+                    </md-input-container>
+                    <div>
+                        <md-button class="md-icon-button" ng-click="removeFilter()" aria-label="close">
+                            <md-icon>close</md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </form>
         </div>
     </md-toolbar>
     <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
@@ -32,19 +53,21 @@
                 <th md-column><span>Delete</span></th>
             </tr>
             </thead>
+            <md-progress-linear md-mode="indeterminate" class="md-accent" ng-show="loading"></md-progress-linear>
             <tbody md-body>
             <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect"
-                ng-repeat="rows in data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                ng-repeat="rows in data | filter: searchText | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                 <td md-cell>{{rows.tusers.uname}}</td>
                 <td md-cell>{{rows.queryTitle}}</td>
                 <td md-cell>{{rows.queryDesc}}</td>
                 <td md-cell>
-                    <md-button type="button" class="md-icon-button" ngclipboard data-clipboard-text="{{rows.queryDesc}}">
+                    <md-button type="button" class="md-icon-button" ngclipboard
+                               data-clipboard-text="{{rows.queryDesc}}">
                         <md-icon>content_copy</md-icon>
                     </md-button>
                 </td>
                 <td md-cell>
-                    <md-button class="md-icon-button" ng-click="showDialog($event, $index)">
+                    <md-button class="md-icon-button" ng-click="showDialogSave($event, $index)">
                         <md-icon>edit</md-icon>
                     </md-button>
                     <md-button class="md-icon-button" ng-click="" ng-show="false">
@@ -55,14 +78,20 @@
                     </md-button>
                 </td>
                 <td md-cell>
-                    <md-button class="md-icon-button" ng-click="showConfirm($event, $index)">
+                    <md-button class="md-icon-button" ng-click="showConfirmDelete($event, $index)">
                         <md-icon>delete</md-icon>
                     </md-button>
+                </td>
+            </tr>
+            <tr ng-if="data.length <= 0">
+                <td md-cell colspan="6">
+                    Data tidak ditemukan
                 </td>
             </tr>
             </tbody>
         </table>
     </md-table-container>
     <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page"
-                         md-total="{{data.count}}" md-page-select="options.pageSelect"
+                         md-total="{{counted}}" md-page-select="options.pageSelect"
                          md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+</md-card>

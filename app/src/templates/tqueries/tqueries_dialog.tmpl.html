@@ -1,6 +1,6 @@
 <md-dialog aria-label="Add Query" flex="">
-    <form ng-cloak>
-        <md-toolbar>
+    <form name="queriesForm" ng-cloak>
+        <md-toolbar ng-hide="toolbarMsg">
             <div class="md-toolbar-tools">
                 <h2>{{dialogTitle}}</h2>
                 <span flex></span>
@@ -9,26 +9,26 @@
                 </md-button>
             </div>
         </md-toolbar>
+        <md-progress-linear md-mode="indeterminate" class="md-accent" ng-show="loading"></md-progress-linear>
         <md-dialog-content>
             <div class="md-dialog-content">
-                <form name="projectForm" layout="row">
-                    <div layout="column">
-                        <md-input-container>
-                            <label>Query Title</label>
-                            <input required name="row.queryTitle" ng-model="row.queryTitle">
-                            <div ng-messages="projectForm.row.queryTitle.$error">
-                                <div ng-message="required">Query Title harus diisi</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Query Desc.</label>
-                            <textarea required name="row.queryDesc" rows="5" md-select-on-focus ng-model="row.queryDesc"></textarea>
-                            <div ng-messages="projectForm.row.queryDesc.$error">
-                                <div ng-message="required">Query Desc. harus diisi</div>
-                            </div>
-                        </md-input-container>
-                    </div>
-                </form>
+                <div layout="column">
+                    <md-input-container>
+                        <label>Query Title</label>
+                        <input required name="queryTitle" ng-model="row.queryTitle">
+                        <div ng-messages="queriesForm.queryTitle.$error">
+                            <div ng-message="required">Query Title harus diisi</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Query Desc.</label>
+                        <textarea required name="queryDesc" rows="5" md-select-on-focus
+                                  ng-model="row.queryDesc"></textarea>
+                        <div ng-messages="queriesForm.queryDesc.$error">
+                            <div ng-message="required">Query Desc. harus diisi</div>
+                        </div>
+                    </md-input-container>
+                </div>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
@@ -36,9 +36,10 @@
                 <md-icon>play_arrow</md-icon>
             </md-button>
             <div flex=""></div>
-            <md-button class="md-icon-button" ng-click="saveData()">
+            <md-button type="submit" class="md-icon-button" ng-click="saveData($event)">
                 <md-icon>save</md-icon>
             </md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>
+

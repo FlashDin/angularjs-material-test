@@ -8,6 +8,7 @@ var mod = angular.module('app', [
     'ngMaterial',
     'ngAnimate',
     'ngAria',
+    'ngMessages',
     'md.data.table',
     'ngclipboard',
     'home.route',

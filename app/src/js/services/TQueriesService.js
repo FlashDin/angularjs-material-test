@@ -12,7 +12,7 @@ function tQueriesService($http, config) {
         return $http.put(config.apiUrl + '/api/queries', params);
     };
     this.deleteData = function deleteData(params) {
-        return $http.delete(config.apiUrl + '/api/queries', params);
+        return $http.delete(config.apiUrl + '/api/queries/' + params);
     };
     this.findAll = function findAll() {
         return $http.get(config.apiUrl + '/api/queries');
