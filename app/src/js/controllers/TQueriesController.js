@@ -300,7 +300,6 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
         });
     };
     // dialog
-
     // $scope.showActionToast = function () {
     //     var pinTo = 'top right';
     //     var toast = $mdToast.simple()
@@ -320,6 +319,10 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
     // $scope.closeToast = function () {
     //     $mdToast.hide();
     // };
+
+    // print
+
+    // print
 }
 
 tQueriesCtrl.$inject = ['$scope', 'TQueriesService', '$timeout', '$mdUtil', '$log', '$mdEditDialog', '$q', '$mdDialog', '$mdToast', '$filter'];

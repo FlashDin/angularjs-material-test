@@ -36,7 +36,7 @@ mod.config(appConfigure);
 
 function appConfigure($mdThemingProvider) {
     $mdThemingProvider.theme('default')
-        .primaryPalette('blue-grey')
+        .primaryPalette('indigo')
         .accentPalette('orange');
 }
 
