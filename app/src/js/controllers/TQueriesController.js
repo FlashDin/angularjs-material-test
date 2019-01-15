@@ -113,9 +113,9 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
         return ['Candy', 'Ice cream', 'Other', 'Pastry'];
     };
     $scope.loadStuff = function () {
+        $scope.findAll();
         $scope.promise = $timeout(function () {
             // loading
-            $scope.findAll();
         }, 2000);
     };
     $scope.logItem = function (item) {
@@ -154,7 +154,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
             },
             multiple: true,
             controllerAs: 'TQueriesCtrl',
-            controller: function ($scope, index, $mdDialog) {
+            controller: function ($scope, index) {
                 $scope.loading = false;
                 if (index >= 0) {
                     $scope.dialogTitle = "Edit Query";
@@ -298,6 +298,77 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
         }, function () {
             console.log("cancel");
         });
+    };
+    $scope.showDialogTestSelect = function (ev, qry) {
+        ev.stopPropagation();
+        $mdDialog.show({
+            templateUrl: 'src/templates/oratools/ora_testdialog.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            bindToController: true,
+            fullscreen: false,
+            scope: $scope,
+            preserveScope: true,
+            locals: {
+                qry: qry
+            },
+            multiple: true,
+            controllerAs: 'TQueriesCtrl',
+            controller: function ($scope, qry) {
+                $scope.findTest = function () {
+                    $scope.rowx = {query: qry};
+                    $scope.res = [];
+                    // $scope.keyes = '';
+                    TQueriesService.findTest($scope.rowx)
+                        .then(function (response) {
+                            $scope.dialogTitle2 = "Test Result : Success";
+                            $scope.res = response.data;
+                            // $scope.keyes = (Object.keys($scope.res[0]));
+                            console.log("status:" + response.status);
+                        })
+                        .catch(function (response) {
+                            $scope.dialogTitle2 = "Test Result : Error";
+                            console.error('Error findTest:', response.status, response.data);
+                        })
+                        .finally(function () {
+                            console.log("Task Finished.");
+                        });
+                };
+                $scope.cancel = function () {
+                    $mdDialog.cancel();
+                };
+            }
+        })
+            .then(function (answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+            }, function () {
+                $scope.status = 'You cancelled the dialog.';
+            });
+    };
+    $scope.showDialogQueryList = function (ev) {
+        $mdDialog.show({
+            templateUrl: 'src/templates/oratools/tqueries_listdialog.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            bindToController: true,
+            fullscreen: false,
+            scope: $scope,
+            preserveScope: true,
+            multiple: true,
+            controllerAs: 'TQueriesCtrl',
+            controller: function ($scope) {
+                $scope.cancel = function () {
+                    $mdDialog.cancel();
+                };
+            }
+        })
+            .then(function (answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+            }, function () {
+                $scope.status = 'You cancelled the dialog.';
+            });
     };
     // dialog
     // $scope.showActionToast = function () {

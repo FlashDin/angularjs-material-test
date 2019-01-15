@@ -4,7 +4,8 @@
             <div class="md-toolbar-tools">
                 <h2>{{dialogTitle}}</h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="cancel()">
+                <md-button class="md-icon-button" ng-click="cancel()" aria-label="Cancel">
+                    <md-tooltip md-direction="bottom">Cancel</md-tooltip>
                     <md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
                 </md-button>
             </div>
@@ -32,11 +33,13 @@
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <md-button class="md-icon-button" aria-label="Run">
+            <md-button class="md-icon-button" ng-click="showDialogTestSelect($event, row.queryDesc)" ng-disabled="!row.queryDesc" aria-label="Test Query">
+                <md-tooltip md-direction="top">Test Query</md-tooltip>
                 <md-icon>play_arrow</md-icon>
             </md-button>
             <div flex=""></div>
-            <md-button type="submit" class="md-icon-button" ng-click="saveData($event)">
+            <md-button type="submit" class="md-icon-button" ng-click="saveData($event)" ng-disabled="!row.queryTitle || !row.queryDesc" aria-label="Save">
+                <md-tooltip md-direction="top">Save</md-tooltip>
                 <md-icon>save</md-icon>
             </md-button>
         </md-dialog-actions>

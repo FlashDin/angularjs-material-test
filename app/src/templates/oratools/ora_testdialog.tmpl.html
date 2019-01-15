@@ -1,0 +1,44 @@
+<md-dialog aria-label="Test Query" flex="">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{dialogTitle2}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content" data-ng-init="findTest()">
+            <md-table-container>
+                <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}"
+                       ng-model="selected"
+                       md-progress="promise">
+                    <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
+                    <tr md-row>
+                        <th md-column ng-repeat="(key, val) in res[0]" md-order-by="{{key}}"><span>{{key}}</span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect"
+                        ng-repeat="rows in res | limitTo: 10 : (query.page -1) * 10">
+                        <td ng-repeat="columns in rows" md-cell>
+                            {{columns}}
+                        </td>
+                    </tr>
+                    <tr ng-if="res.length <= 0">
+                        <td md-cell colspan="{{res.length}}">
+                            Data tidak ditemukan
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+
+    </md-dialog-actions>
+</md-dialog>
+

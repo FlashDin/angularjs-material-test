@@ -17,6 +17,9 @@ function tQueriesService($http, config) {
     this.findAll = function findAll() {
         return $http.get(config.apiUrl + '/api/queries');
     };
+    this.findTest = function findTest(params) {
+        return $http.post(config.apiOraUrl + '/api/ora/query_selecttest', params);
+    };
 }
 
 tQueriesService.$inject = ['$http', 'config'];

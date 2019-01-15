@@ -6,13 +6,10 @@ mod.service('OraToolsService', oraToolsService);
 
 function oraToolsService($http, config) {
     this.findAll = function findAll(params) {
-        // var conf = {headers: {'Content-Type': 'application/json'}};
-        return $http.post(config.apiOraUrl + '/api/ora/query_select'); // JSON.stringify()
-        // return $http({
-        //     url: config.apiOraUrl + '/api/ora/query_select',
-        //     method: "POST",
-        //     params: params
-        // });
+        return $http.post(config.apiOraUrl + '/api/ora/query_select', params); // JSON.stringify()
+    };
+    this.findTest = function findTest(params) {
+        return $http.post(config.apiOraUrl + '/api/ora/query_selecttest', params);
     };
 }
 
