@@ -85,7 +85,7 @@ function oraToolsCtrl($scope, OraToolsService, $timeout, $mdUtil, $log, $mdEditD
                     return $q.reject();
                 }
                 if (input.$modelValue === 'Bernie Sanders') {
-                    return dessert.comment = 'FEEL THE BERN!'
+                    return dessert.comment = 'FEEL THE BERN!';
                 }
                 dessert.comment = input.$modelValue;
             },
@@ -119,6 +119,7 @@ function oraToolsCtrl($scope, OraToolsService, $timeout, $mdUtil, $log, $mdEditD
         return ['Candy', 'Ice cream', 'Other', 'Pastry'];
     };
     $scope.loadStuff = function (params) {
+        $scope.data = [];
         $scope.findAll(params);
         $scope.promise = $timeout(function () {
 

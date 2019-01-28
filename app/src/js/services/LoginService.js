@@ -5,17 +5,17 @@ var mod = angular.module('login.service', []);
 mod.service('LoginService', loginService);
 
 function loginService($http, config) {
-    this.saveData = function saveData(params) {
-        return $http.post(config.apiUrl + '/api/users');
+    this.dataQr = function dataQr() {
+        return $http.get(config.apiUrl + '/api/qr');
     };
-    this.updateData = function updateData(id, name, email) {
-        return $http.put(config.apiUrl + '/api/users');
+    this.checkUserSession = function checkUserSession(params) {
+        return $http.get(config.apiUrl + '/api/usersinbrowser/check/' + params.fingerprint);
     };
-    this.deleteData = function deleteData(id) {
-        return $http.delete(config.apiUrl + '/api/users');
+    this.loginToWeb = function loginToWeb(params) {
+        return $http.post(config.apiUrl + '/api/usersinbrowser/login', params);
     };
-    this.findAll = function findAll() {
-        return $http.get(config.apiUrl + '/api/users');
+    this.logoutFromWeb = function logoutFromWeb(params) {
+        return $http.post(config.apiUrl + '/api/usersinbrowser/logout', params);
     };
 }
 

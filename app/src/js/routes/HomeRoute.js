@@ -5,9 +5,8 @@ var mod = angular.module('home.route', []);
 mod.config(homeConfigure);
 
 function homeConfigure($urlRouterProvider, $stateProvider) {
-    $urlRouterProvider.otherwise('/'); // default route
     $stateProvider.state('default', {
-        url: '/',
+        url: '/dashboard',
         templateUrl: 'src/templates/dashboard.html',
         controller: 'HomeCtrl',
         controllerAs: 'default'
