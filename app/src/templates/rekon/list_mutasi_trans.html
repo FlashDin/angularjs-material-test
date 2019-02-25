@@ -1,41 +1,16 @@
-<md-card data-ng-init="findAll()">
+<md-card data-ng-init="findAll()" layout-margin="">
     <md-toolbar class="md-table-toolbar md-default" ng-hide="show || options.rowSelection && selected.length">
         <div class="md-toolbar-tools">
-            <span>Data Query</span>
+            <span>Data Mutasi - Transaksi</span>
             <div flex></div>
             <md-button class="md-icon-button" ng-click="showSearch()" aria-label="Pencarian">
                 <md-tooltip md-direction="bottom">Pencarian</md-tooltip>
                 <md-icon>search</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ng-click="showDialogSave($event, -data.length)" aria-label="Add">
-                <md-tooltip md-direction="bottom">Add</md-tooltip>
-                <md-icon>add</md-icon>
-            </md-button>
             <md-button class="md-icon-button" ng-click="loadStuff()" aria-label="Refresh">
                 <md-tooltip md-direction="bottom">Refresh</md-tooltip>
                 <md-icon>refresh</md-icon>
             </md-button>
-        </div>
-    </md-toolbar>
-    <md-toolbar class="md-table-toolbar md-default" ng-show="show &amp;&amp; !selected.length" aria-hidden="false"
-                style="">
-        &nbsp;&nbsp;&nbsp;
-        <div class="md-toolbar-tools">
-            <form flex name="filter.form">
-                <div layout="row">
-                    <md-input-container flex md-no-float class="md-block">
-                        <md-icon class="material-icons">search</md-icon>
-                        <input type="text" placeholder="Pencarian" ng-model="searchText"
-                               class="ng-pristine ng-valid ng-touched"
-                               aria-invalid="false" ng-model-options="{debounce: 500}">
-                    </md-input-container>
-                    <div>
-                        <md-button class="md-icon-button" ng-click="removeFilter()" aria-label="close">
-                            <md-icon>close</md-icon>
-                        </md-button>
-                    </div>
-                </div>
-            </form>
         </div>
     </md-toolbar>
     <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
@@ -48,12 +23,15 @@
                md-progress="promise">
             <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
             <tr md-row>
-                <th md-column md-order-by="tusers.uname"><span>Oleh</span></th>
-                <th md-column md-order-by="queryTitle"><span>Query Title</span></th>
-                <th md-column md-order-by="queryDesc"><span>Query Desc.</span></th>
-                <th md-column><span>Copy</span></th>
-                <th md-column><span>Update</span></th>
-                <th md-column><span>Delete</span></th>
+                <th md-column md-order-by="hehe"><span>Tanggal</span></th>
+                <th md-column md-order-by="material_dokumen"><span>Material Dokumen</span></th>
+                <th md-column md-order-by="hehe"><span>Mat Doc SAP</span></th>
+                <th md-column md-order-by="hehe"><span>No Material</span></th>
+                <th md-column md-order-by="hehe"><span>Nama Material</span></th>
+                <th md-column md-order-by="hehe"><span>Transaksi</span></th>
+                <th md-column md-order-by="hehe"><span>Masuk</span></th>
+                <th md-column md-order-by="hehe"><span>Keluar</span></th>
+                <th md-column md-order-by="hehe"><span>Satuan</span></th>
             </tr>
             </thead>
             <md-progress-linear md-mode="indeterminate" class="md-accent" ng-show="loading"></md-progress-linear>
@@ -61,7 +39,7 @@
             <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect"
                 ng-repeat="rows in data | filter: searchText | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit"
                 ng-dblclick="showDialogTestSelect($event, rows.queryDesc)">
-                <td md-cell>{{rows.tusers.uname}}</td>
+                <td md-cell>{{rows.hehe}}</td>
                 <td md-cell>{{rows.queryTitle}}</td>
                 <td md-cell>{{rows.queryDesc}}</td>
                 <td md-cell>
@@ -85,7 +63,7 @@
                 </td>
             </tr>
             <tr ng-if="data.length <= 0">
-                <td md-cell colspan="6">
+                <td md-cell colspan="9">
                     Data tidak ditemukan
                 </td>
             </tr>

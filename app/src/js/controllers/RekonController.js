@@ -1,12 +1,12 @@
 'use strict';
 
-var mod = angular.module('tqueries.controller', [
-    'tqueries.service'
+var mod = angular.module('rekon.controller', [
+    'rekon.service'
 ]);
 
-mod.controller('TQueriesCtrl', tQueriesCtrl);
+mod.controller('RekonCtrl', tQueriesCtrl);
 
-function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditDialog, $q, $mdDialog, $mdToast, $filter) {
+function tQueriesCtrl($scope, RekonService, $timeout, $mdUtil, $log, $mdEditDialog, $q, $mdDialog, $mdToast, $filter) {
     $scope.selected = [];
     $scope.limitOptions = [5, 10, 15];
     $scope.options = {
@@ -28,7 +28,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
     $scope.data = [];
     $scope.row = [];
     $scope.findAll = function () {
-        TQueriesService.findAll()
+        RekonService.findAll()
             .then(function (response) {
                 $scope.data = response.data;
                 $scope.dataCopy = angular.copy($scope.data);
@@ -141,7 +141,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
     $scope.showDialogSave = function (ev, index) {
         ev.stopPropagation();
         $mdDialog.show({
-            templateUrl: 'src/templates/tqueries/tqueries_dialog.tmpl.html',
+            templateUrl: 'src/templates/rekon/rekon_dialog.tmpl.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: false,
@@ -153,7 +153,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
                 index: (($scope.query.page - 1) * $scope.query.limit) + index
             },
             multiple: true,
-            controllerAs: 'TQueriesCtrl',
+            controllerAs: 'RekonCtrl',
             controller: function ($scope, index) {
                 $scope.loading = false;
                 if (index >= 0) {
@@ -171,7 +171,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
                             .cancel('Cancel');
                         $mdDialog.show(confirm).then(function () {
                             $scope.loading = true;
-                            TQueriesService.updateData($scope.row)
+                            RekonService.updateData($scope.row)
                                 .then(function (response) {
                                     $scope.res = response.data;
                                     angular.copy($scope.row, $scope.data[index]); // newData, oldData to update
@@ -211,7 +211,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
                     $scope.saveData = function () {
                         $scope.row.tusers.idUser = 1;
                         $scope.loading = true;
-                        TQueriesService.saveData($scope.row)
+                        RekonService.saveData($scope.row)
                             .then(function (response) {
                                 $scope.res = response.data;
                                 $scope.data.push($scope.row);
@@ -266,7 +266,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
             var rowx = angular.copy($scope.data[idx]);
             $scope.row = rowx;
             $scope.loading = true;
-            TQueriesService.deleteData($scope.row.idQuery)
+            RekonService.deleteData($scope.row.idQuery)
                 .then(function (response) {
                     $scope.res = response.data;
                     $scope.data.splice(idx, 1);
@@ -314,13 +314,13 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
                 qry: qry
             },
             multiple: true,
-            controllerAs: 'TQueriesCtrl',
+            controllerAs: 'RekonCtrl',
             controller: function ($scope, qry) {
                 $scope.findTest = function () {
                     $scope.rowx = {query: qry};
                     $scope.res = [];
                     // $scope.keyes = '';
-                    TQueriesService.findTest($scope.rowx)
+                    RekonService.findTest($scope.rowx)
                         .then(function (response) {
                             $scope.dialogTitle2 = "Test Result : Success";
                             $scope.res = response.data;
@@ -348,7 +348,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
     };
     $scope.showDialogQueryList = function (ev) {
         $mdDialog.show({
-            templateUrl: 'src/templates/oratools/tqueries_listdialog.tmpl.html',
+            templateUrl: 'src/templates/oratools/rekon_listdialog.tmpl.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: true,
@@ -357,7 +357,7 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
             scope: $scope,
             preserveScope: true,
             multiple: true,
-            controllerAs: 'TQueriesCtrl',
+            controllerAs: 'RekonCtrl',
             controller: function ($scope) {
                 $scope.cancel = function () {
                     $mdDialog.cancel();
@@ -396,4 +396,4 @@ function tQueriesCtrl($scope, TQueriesService, $timeout, $mdUtil, $log, $mdEditD
     // print
 }
 
-tQueriesCtrl.$inject = ['$scope', 'TQueriesService', '$timeout', '$mdUtil', '$log', '$mdEditDialog', '$q', '$mdDialog', '$mdToast', '$filter'];
+tQueriesCtrl.$inject = ['$scope', 'RekonService', '$timeout', '$mdUtil', '$log', '$mdEditDialog', '$q', '$mdDialog', '$mdToast', '$filter'];

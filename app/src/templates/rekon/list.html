@@ -1,0 +1,96 @@
+<md-card layout-margin="">
+    <div layout="row">
+        <md-input-container flex="50">
+            <label>Region</label>
+            <md-select ng-model="region">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>UIW</label>
+            <md-select ng-model="uiw">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>UP3</label>
+            <md-select ng-model="up3">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>Gudang</label>
+            <md-select ng-model="gudang">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+    <div layout="row">
+        <md-input-container flex="50">
+            <label>Valuation Type</label>
+            <md-select ng-model="valType">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>Status SAP</label>
+            <md-select ng-model="statusSap">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>Status Pemakaian</label>
+            <md-select ng-model="statusPemakaian">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>Jenis Pekerjaan</label>
+            <md-select ng-model="jnsPekerjaan">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
+                    {{state.abbrev}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>Tanggal</label>
+            <md-datepicker ng-model="tglAwal"></md-datepicker>
+        </md-input-container>
+        <label> s/d </label>
+        <md-input-container flex="50">
+            <label>Tanggal</label>
+            <md-datepicker ng-model="tglAkhir"></md-datepicker>
+        </md-input-container>
+    </div>
+    <div layout="row">
+        <div flex=""></div>
+        <md-button class="md-icon-button" aria-label="Tampilkan">
+            <md-tooltip md-direction="left">Tampilkan</md-tooltip>
+            <md-icon>done</md-icon>
+        </md-button>
+    </div>
+</md-card>
+<div ng-include="'/src/templates/rekon/list_material_trans.html'"></div>
+<div ng-include="'/src/templates/rekon/list_mutasi_trans.html'"></div>

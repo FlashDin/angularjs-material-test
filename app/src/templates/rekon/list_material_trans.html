@@ -1,7 +1,7 @@
-<md-card data-ng-init="findAll()">
+<md-card data-ng-init="findAll()" layout-margin="">
     <md-toolbar class="md-table-toolbar md-default" ng-hide="show || options.rowSelection && selected.length">
         <div class="md-toolbar-tools">
-            <span>Data Query</span>
+            <span>Data Material Stok - Transaksi</span>
             <div flex></div>
             <md-button class="md-icon-button" ng-click="showSearch()" aria-label="Pencarian">
                 <md-tooltip md-direction="bottom">Pencarian</md-tooltip>
@@ -25,7 +25,7 @@
                 <div layout="row">
                     <md-input-container flex md-no-float class="md-block">
                         <md-icon class="material-icons">search</md-icon>
-                        <input type="text" placeholder="Pencarian" ng-model="searchText"
+                        <input type="text" placeholder="Material / No. Pemesanan / No. Transaksi" ng-model="searchText"
                                class="ng-pristine ng-valid ng-touched"
                                aria-invalid="false" ng-model-options="{debounce: 500}">
                     </md-input-container>
@@ -48,12 +48,23 @@
                md-progress="promise">
             <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
             <tr md-row>
-                <th md-column md-order-by="tusers.uname"><span>Oleh</span></th>
-                <th md-column md-order-by="queryTitle"><span>Query Title</span></th>
-                <th md-column md-order-by="queryDesc"><span>Query Desc.</span></th>
-                <th md-column><span>Copy</span></th>
-                <th md-column><span>Update</span></th>
-                <th md-column><span>Delete</span></th>
+                <th md-column md-order-by="gudang"><span>Gudang</span></th>
+                <th md-column md-order-by="nomor_material"><span>No Material</span></th>
+                <th md-column md-order-by="nama_material"><span>Nama Material</span></th>
+                <th md-column md-order-by="valuation_type"><span>Valuation Type</span></th>
+                <th md-column><span>Satuan</span></th>
+                <th md-column><span>Stock Siap</span></th>
+                <th md-column><span>Stock Reservasi</span></th>
+                <th md-column><span>Stock In Transit</span></th>
+                <th md-column><span>Stock Ex Bkr</span></th>
+                <th md-column><span>Stock Minimum</span></th>
+                <th md-column md-order-by="nomor_reservasi"><span>No Reservasi</span></th>
+                <th md-column md-order-by="nomor_pemakaian"><span>No Pemakaian</span></th>
+                <th md-column md-order-by="tgl_reservasi"><span>Tgl. Reservasi</span></th>
+                <th md-column md-order-by="jenis_pekerjaan"><span>Jenis Pekerjaan</span></th>
+                <th md-column><span>Status Pemakaian</span></th>
+                <th md-column><span>Status SAP</span></th>
+                <th md-column><span>Status Selisih</span></th>
             </tr>
             </thead>
             <md-progress-linear md-mode="indeterminate" class="md-accent" ng-show="loading"></md-progress-linear>
@@ -61,7 +72,7 @@
             <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect"
                 ng-repeat="rows in data | filter: searchText | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit"
                 ng-dblclick="showDialogTestSelect($event, rows.queryDesc)">
-                <td md-cell>{{rows.tusers.uname}}</td>
+                <td md-cell>{{rows.hehe}}</td>
                 <td md-cell>{{rows.queryTitle}}</td>
                 <td md-cell>{{rows.queryDesc}}</td>
                 <td md-cell>
@@ -85,7 +96,7 @@
                 </td>
             </tr>
             <tr ng-if="data.length <= 0">
-                <td md-cell colspan="6">
+                <td md-cell colspan="17">
                     Data tidak ditemukan
                 </td>
             </tr>

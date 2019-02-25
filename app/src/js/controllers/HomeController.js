@@ -40,8 +40,7 @@ function homeCtrl($scope, HomeService, $timeout, $mdSidenav, $mdUtil, $log) {
             $scope.toggleFlag = false;
             $scope.size = "25";
             $scope.buttonToggle = "close";
-        }
-        else {
+        } else {
             $scope.myClass = "md-sidenav-left md-whiteframe-z2";
             $scope.toggleFlag = true;
             $scope.size = "5";
@@ -68,6 +67,16 @@ function homeCtrl($scope, HomeService, $timeout, $mdSidenav, $mdUtil, $log) {
     $scope.menu = [
         {'name': 'Queries Menu', 'icon': 'insert_emoticon', 'link': 'tqueries'},
         {'name': 'Ora Tools Menu', 'icon': 'play_arrow', 'link': 'ora_tools'},
+        {
+            'name': 'Rekon', 'icon': 'play_arrow', 'link': 'rekon',
+            'submenu': [{
+                'name': 'Cek Transaki',
+                'link': 'cek_transaksi'
+            }, {
+                'name': 'Cek Slip',
+                'link': 'cek_transaksi'
+            }]
+        }
     ];
     // sidenav add
 
@@ -117,6 +126,7 @@ function homeCtrl($scope, HomeService, $timeout, $mdSidenav, $mdUtil, $log) {
     function randomColor() {
         return COLORS[Math.floor(Math.random() * COLORS.length)];
     }
+
     // grid list material color
 }
 

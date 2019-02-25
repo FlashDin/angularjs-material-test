@@ -20,6 +20,7 @@
         'home.controller',
         'tqueries.controller',
         'oratools.controller',
+        'rekon.controller',
         'myApp.version'
     ]);
     mod.run(appRun);
@@ -39,8 +40,8 @@
             console.log($location.path());
             var loggedIn = $rootScope.globals.uname;
             if (restrictedPage && !loggedIn) {
-                $rootScope.globals.isVisibleLogin = false;
-                $location.path('/login');
+                $rootScope.globals.isVisibleLogin = true; // false
+                // $location.path('/login');
             }
         });
         console.log("app run");

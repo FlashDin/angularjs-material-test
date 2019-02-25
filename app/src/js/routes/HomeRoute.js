@@ -22,6 +22,12 @@ function homeConfigure($urlRouterProvider, $stateProvider) {
             templateUrl: 'src/templates/oratools/ora_tools.html',
             controller: 'OraToolsCtrl',
             controllerAs: 'ora_tools'
+        })
+        .state('rekon', {
+            url: '/rekon',
+            templateUrl: 'src/templates/rekon/list.html',
+            controller: 'RekonCtrl',
+            controllerAs: 'rekon'
         });
 }
 
